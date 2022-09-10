@@ -1,6 +1,5 @@
 package io.swagger.api;
 
-import java.math.BigDecimal;
 import io.swagger.model.Order;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -24,35 +23,40 @@ import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T22:37:01.163Z")
 
 @Controller
-public class OrdersApiController implements OrdersApi {
+public class OrderApiController implements OrderApi {
 
-    private static final Logger log = LoggerFactory.getLogger(OrdersApiController.class);
+    private static final Logger log = LoggerFactory.getLogger(OrderApiController.class);
 
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public OrdersApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public OrderApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }
 
-    public ResponseEntity<List<Order>> ordersUserIdGet(@ApiParam(value = "ID do usuário",required=true) @PathVariable("userId") Long userId) {
+    public ResponseEntity<Void> orderOrderIdDelete(@ApiParam(value = "Id do pedido a ser deletado",required=true) @PathVariable("orderId") Long orderId) {
+        String accept = request.getHeader("Accept");
+        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<Order> orderOrderIdGet(@ApiParam(value = "ID do usuário",required=true) @PathVariable("orderId") Long orderId) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<Order>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Order>(objectMapper.readValue("{\"empty\": false}", Order.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Order>>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Order>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<List<Order>>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Order>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> ordersUserIdPost(@ApiParam(value = "",required=true) @PathVariable("userId") BigDecimal userId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Order body) {
+    public ResponseEntity<Void> orderOrderIdPut(@ApiParam(value = "",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Order body) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }

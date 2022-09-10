@@ -22,51 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T19:42:49.684Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T22:37:01.163Z")
 
 @Validated
 @Api(value = "orders", description = "the orders API")
-@RequestMapping(value = "/")
+@RequestMapping(value = "")
 public interface OrdersApi {
-
-    @ApiOperation(value = "Deleta o pedido", nickname = "ordersOrderIdDelete", notes = "", authorizations = {
-        @Authorization(value = "Bearer")
-    }, tags={ "orders", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Deletado com sucesso"),
-        @ApiResponse(code = 404, message = "Pedido não encontrado") })
-    @RequestMapping(value = "/orders/{orderId}/",
-        produces = { "application/json" }, 
-        method = RequestMethod.DELETE)
-    ResponseEntity<Void> ordersOrderIdDelete(@ApiParam(value = "Id do pedido a ser deletado",required=true) @PathVariable("orderId") Long orderId);
-
-
-    @ApiOperation(value = "Retorna um pedido", nickname = "ordersOrderIdGet", notes = "", response = Order.class, authorizations = {
-        @Authorization(value = "Bearer")
-    }, tags={ "orders", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Sucesso", response = Order.class),
-        @ApiResponse(code = 401, message = "Sem autorizacao") })
-    @RequestMapping(value = "/orders/{orderId}/",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.GET)
-    ResponseEntity<Order> ordersOrderIdGet(@ApiParam(value = "ID do usuário",required=true) @PathVariable("orderId") Long orderId);
-
-
-    @ApiOperation(value = "Atualizar um pedido", nickname = "ordersOrderIdPut", notes = "Usado apenas para invalidar o cupom", authorizations = {
-        @Authorization(value = "Bearer")
-    }, tags={ "orders", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Atualizado com sucesso"),
-        @ApiResponse(code = 401, message = "Nao autorizado"),
-        @ApiResponse(code = 404, message = "Pedido nao encontrado") })
-    @RequestMapping(value = "/orders/{orderId}/",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.PUT)
-    ResponseEntity<Void> ordersOrderIdPut(@ApiParam(value = "",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Order body);
-
 
     @ApiOperation(value = "Retorna os pedidos de um usuario", nickname = "ordersUserIdGet", notes = "", response = Order.class, responseContainer = "List", authorizations = {
         @Authorization(value = "Bearer")
@@ -76,7 +37,6 @@ public interface OrdersApi {
         @ApiResponse(code = 401, message = "Sem autorizacao") })
     @RequestMapping(value = "/orders/{userId}",
         produces = { "application/json" }, 
-        consumes = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<List<Order>> ordersUserIdGet(@ApiParam(value = "ID do usuário",required=true) @PathVariable("userId") Long userId);
 
