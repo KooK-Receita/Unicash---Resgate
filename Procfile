@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/swagger-spring-1.0.0.jar
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/*.jar
