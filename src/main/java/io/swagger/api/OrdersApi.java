@@ -26,7 +26,7 @@ import java.util.List;
 
 @Validated
 @Api(value = "orders", description = "the orders API")
-@RequestMapping(value = "/v2")
+@RequestMapping(value = "/")
 public interface OrdersApi {
 
     @ApiOperation(value = "Deleta o pedido", nickname = "ordersOrderIdDelete", notes = "", authorizations = {
