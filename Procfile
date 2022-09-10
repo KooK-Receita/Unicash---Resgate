@@ -1,1 +1,1 @@
-web: java -cp target/classes/;target/dependency/* io.swagger.Swagger2SpringBoot
+web: java -jar target/swagger-spring-1.0.0.jar
