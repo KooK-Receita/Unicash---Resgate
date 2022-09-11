@@ -3,11 +3,11 @@ package io.swagger.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import org.threeten.bp.OffsetDateTime;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +39,7 @@ public class Order   {
 
   @Column(name = "CREATED_AT")
   @JsonProperty("createdAt")
-  private OffsetDateTime createdAt = null;
+  private Date createdAt = null;
 
   @JsonProperty("shopId")
   private Long shopId = null;
@@ -57,11 +57,11 @@ public class Order   {
 
   @Column(name = "VALID_UNTIL")
   @JsonProperty("validUntil")
-  private OffsetDateTime validUntil = null;
+  private Date validUntil = null;
 
   @Column(name = "TOTAL")
   @JsonProperty("total")
-  private Float total = null;
+  private Double total = null;
 
   public Order orderId(Long orderId) {
     this.orderId = orderId;
@@ -113,7 +113,7 @@ public class Order   {
     this.products = products;
   }
 
-  public Order createdAt(OffsetDateTime createdAt) {
+  public Order createdAt(Date createdAt) {
     this.createdAt = createdAt;
     return this;
   }
@@ -126,11 +126,11 @@ public class Order   {
 
   @Valid
 
-  public OffsetDateTime getCreatedAt() {
+  public Date getCreatedAt() {
     return createdAt;
   }
 
-  public void setCreatedAt(OffsetDateTime createdAt) {
+  public void setCreatedAt(Date createdAt) {
     this.createdAt = createdAt;
   }
 
@@ -214,7 +214,7 @@ public class Order   {
     this.active = active;
   }
 
-  public Order validUntil(OffsetDateTime validUntil) {
+  public Order validUntil(Date validUntil) {
     this.validUntil = validUntil;
     return this;
   }
@@ -227,15 +227,15 @@ public class Order   {
 
   @Valid
 
-  public OffsetDateTime getValidUntil() {
+  public Date getValidUntil() {
     return validUntil;
   }
 
-  public void setValidUntil(OffsetDateTime validUntil) {
+  public void setValidUntil(Date validUntil) {
     this.validUntil = validUntil;
   }
 
-  public Order total(Float total) {
+  public Order total(Double total) {
     this.total = total;
     return this;
   }
@@ -247,11 +247,11 @@ public class Order   {
   @ApiModelProperty(value = "")
 
 
-  public Float getTotal() {
+  public Double getTotal() {
     return total;
   }
 
-  public void setTotal(Float total) {
+  public void setTotal(Double total) {
     this.total = total;
   }
 

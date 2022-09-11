@@ -25,6 +25,7 @@ public class MigrationHandler {
         transaction.begin();
 
         createOrderTable(entityManager);
+        createOrderProductTable(entityManager);
         transaction.commit();
     }
 
@@ -41,23 +42,24 @@ public class MigrationHandler {
         return result != null;
     }
     protected void createOrderTable(EntityManager entityManger){
-        log.debug("CREATING ORDER TABLE");
-
-
         String sql = "CREATE TABLE IF NOT EXISTS \"ORDER\" (" +
                 "ORDER_ID SERIAL PRIMARY KEY, " +
                 "CREATED_AT TIMESTAMP NOT NULL, " +
                 "SHOP_ID BIGINT NOT NULL, " +
                 "USER_ID BIGINT NOT NULL, " +
                 "COUPON_CODE VARCHAR(8) NOT NULL, " +
-                "ACTIVE BIT NOT NULL, " +
+                "ACTIVE BOOLEAN NOT NULL, " +
                 "VALID_UNTIL TIMESTAMP NOT NULL, " +
-                "TOTAL DECIMAL(6, 2) NOT NULL" +
+                "TOTAL DECIMAL(10, 2) NOT NULL" +
                 ");";
 
         entityManger.createNativeQuery(sql).executeUpdate();
 
-        log.debug("ORDER TABLE CREATED");
+    }
 
+    protected void createOrderProductTable(EntityManager entityManager){
+        String sql = "CREATE TABLE IF NOT EXISTS \"ORDER_PRODUCT\" (" +
+                "ORDER_PRODUCT_ID SERIAL PRIMARY KEY, " +
+                "ORDER_ID BIGINT, PRODUCT_ID BIGINT";
     }
 }

@@ -51,6 +51,6 @@ public interface OrdersApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> ordersUserIdPost(@ApiParam(value = "",required=true) @PathVariable("userId") BigDecimal userId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Order body);
+    ResponseEntity<Order> ordersUserIdPost(@ApiParam(value = "",required=true) @PathVariable("userId") Long userId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Order body);
 
 }
