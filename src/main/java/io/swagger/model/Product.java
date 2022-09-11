@@ -1,13 +1,13 @@
 package io.swagger.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Objects;
 
 /**
  * Product
@@ -16,16 +16,22 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T19:42:49.684Z")
 
 
+@Entity
 public class Product   {
+
+  @Id
+  @Column(name = "PRODUCT_ID")
   @JsonProperty("productId")
   private Long productId = null;
 
   @JsonProperty("shopId")
   private Long shopId = null;
 
+  @Column(name = "NAME")
   @JsonProperty("name")
   private String name = null;
 
+  @Column(name = "PRICE")
   @JsonProperty("price")
   private Float price = null;
 

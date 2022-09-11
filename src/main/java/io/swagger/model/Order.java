@@ -1,18 +1,15 @@
 package io.swagger.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.Product;
-import java.math.BigDecimal;
+import org.springframework.validation.annotation.Validated;
+import org.threeten.bp.OffsetDateTime;
+
+import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import org.threeten.bp.OffsetDateTime;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
 /**
  * Order
@@ -20,37 +17,55 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T19:42:49.684Z")
 
-
+@Entity
+@Table(name = "ORDER")
 public class Order   {
-  @JsonProperty("orderId")
-  private BigDecimal orderId = null;
 
+  @Id
+  @GeneratedValue
+  @Column(name = "ORDER_ID")
+  @JsonProperty("orderId")
+  private Long orderId = null;
+
+  @ManyToMany
+  @JoinTable(
+          name = "ORDER_PRODUCT",
+          joinColumns = { @JoinColumn(name = "ORDER_ID") },
+          inverseJoinColumns = { @JoinColumn(name = "PRODUCT_ID")}
+  )
   @JsonProperty("products")
   @Valid
-  private List<Product> products = null;
+  private List<Product> products = new ArrayList<>();
 
+  @Column(name = "CREATED_AT")
   @JsonProperty("createdAt")
   private OffsetDateTime createdAt = null;
 
+  @ManyToOne
   @JsonProperty("shopId")
   private Long shopId = null;
 
+  @ManyToOne
   @JsonProperty("userId")
   private Long userId = null;
 
+  @Column(name = "COUPOM_CODE", nullable = false)
   @JsonProperty("couponCode")
   private String couponCode = null;
 
+  @Column(name = "ACTIVE")
   @JsonProperty("active")
   private Boolean active = null;
 
+  @Column(name = "VALID_UNTIL")
   @JsonProperty("validUntil")
   private OffsetDateTime validUntil = null;
 
+  @Column(name = "TOTAL")
   @JsonProperty("total")
   private Float total = null;
 
-  public Order orderId(BigDecimal orderId) {
+  public Order orderId(Long orderId) {
     this.orderId = orderId;
     return this;
   }
@@ -63,11 +78,11 @@ public class Order   {
 
   @Valid
 
-  public BigDecimal getOrderId() {
+  public Long getOrderId() {
     return orderId;
   }
 
-  public void setOrderId(BigDecimal orderId) {
+  public void setOrderId(Long orderId) {
     this.orderId = orderId;
   }
 
