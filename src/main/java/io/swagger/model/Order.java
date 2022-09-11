@@ -41,11 +41,9 @@ public class Order   {
   @JsonProperty("createdAt")
   private OffsetDateTime createdAt = null;
 
-  @ManyToOne
   @JsonProperty("shopId")
   private Long shopId = null;
 
-  @ManyToOne
   @JsonProperty("userId")
   private Long userId = null;
 
