@@ -26,7 +26,7 @@ import java.util.List;
 
 @Validated
 @Api(value = "orders", description = "the orders API")
-@RequestMapping(value = "")
+@RequestMapping(value = "/orders/")
 public interface OrdersApi {
 
     @ApiOperation(value = "Retorna os pedidos de um usuario", nickname = "ordersUserIdGet", notes = "", response = Order.class, responseContainer = "List", authorizations = {
@@ -35,7 +35,7 @@ public interface OrdersApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Sucesso", response = Order.class, responseContainer = "List"),
         @ApiResponse(code = 401, message = "Sem autorizacao") })
-    @RequestMapping(value = "/orders/{userId}",
+    @RequestMapping(value = "{userId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<List<Order>> ordersUserIdGet(@ApiParam(value = "ID do usuário",required=true) @PathVariable("userId") Long userId);
@@ -47,7 +47,7 @@ public interface OrdersApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "Criado"),
         @ApiResponse(code = 405, message = "Invalid input") })
-    @RequestMapping(value = "/orders/{userId}",
+    @RequestMapping(value = "{userId}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)

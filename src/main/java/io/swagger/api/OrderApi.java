@@ -25,7 +25,7 @@ import java.util.List;
 
 @Validated
 @Api(value = "order", description = "the order API")
-@RequestMapping(value = "")
+@RequestMapping(value = "/order/")
 public interface OrderApi {
 
     @ApiOperation(value = "Deleta o pedido", nickname = "orderOrderIdDelete", notes = "", authorizations = {
@@ -34,7 +34,7 @@ public interface OrderApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Deletado com sucesso"),
         @ApiResponse(code = 404, message = "Pedido não encontrado") })
-    @RequestMapping(value = "/order/{orderId}",
+    @RequestMapping(value = "{orderId}",
         produces = { "application/json" }, 
         method = RequestMethod.DELETE)
     ResponseEntity<Void> orderOrderIdDelete(@ApiParam(value = "Id do pedido a ser deletado",required=true) @PathVariable("orderId") Long orderId);
@@ -46,7 +46,7 @@ public interface OrderApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Sucesso", response = Order.class),
         @ApiResponse(code = 401, message = "Sem autorizacao") })
-    @RequestMapping(value = "/order/{orderId}",
+    @RequestMapping(value = "{orderId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<Order> orderOrderIdGet(@ApiParam(value = "ID do usuário",required=true) @PathVariable("orderId") Long orderId);
@@ -59,7 +59,7 @@ public interface OrderApi {
         @ApiResponse(code = 200, message = "Atualizado com sucesso"),
         @ApiResponse(code = 401, message = "Nao autorizado"),
         @ApiResponse(code = 404, message = "Pedido nao encontrado") })
-    @RequestMapping(value = "/order/{orderId}",
+    @RequestMapping(value = "{orderId}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
