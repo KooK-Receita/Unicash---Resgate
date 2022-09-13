@@ -71,7 +71,7 @@ public interface OrderApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso", response = Order.class),
             @ApiResponse(code = 401, message = "Sem autorizacao") })
-    @RequestMapping(value = "{orderId}",
+    @RequestMapping(value = "validate/{couponCode}",
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<Order> orderCouponValidGet(@ApiParam(value = "Código do cupom",required=true) @PathVariable("couponCode") String couponCode);
@@ -82,7 +82,7 @@ public interface OrderApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso", response = Order.class),
             @ApiResponse(code = 401, message = "Sem autorizacao") })
-    @RequestMapping(value = "{orderId}",
+    @RequestMapping(value = "finish/{couponCode}",
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<Order> orderCouponFinishGet(@ApiParam(value = "Código do cupom",required=true) @PathVariable("couponCode") String couponCode);
