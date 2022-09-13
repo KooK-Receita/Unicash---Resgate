@@ -61,4 +61,16 @@ public class OrderApiController implements OrderApi {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+
+    public ResponseEntity<Order> orderCouponValidGet(@ApiParam(value = "Código do cupom",required=true) @PathVariable("couponCode") String couponCode) {
+        // Verifica se o cupom existe no banco e é valido
+        String accept = request.getHeader("Accept");
+        return new ResponseEntity<Order>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<Order> orderCouponFinishGet(@ApiParam(value = "Código do cupom",required=true) @PathVariable("couponCode") String couponCode) {
+        // Dá baixa no cupom, finalizando o pedido e chama a api para debitar do usuário
+        return null;
+    }
+
 }

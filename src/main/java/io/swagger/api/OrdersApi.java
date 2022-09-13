@@ -29,28 +29,28 @@ import java.util.List;
 @RequestMapping(value = "/orders/")
 public interface OrdersApi {
 
-    @ApiOperation(value = "Retorna os pedidos de um usuario", nickname = "ordersUserIdGet", notes = "", response = Order.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Retorna os pedidos do usuario", nickname = "ordersUserGet", notes = "", response = Order.class, responseContainer = "List", authorizations = {
         @Authorization(value = "Bearer")
     }, tags={ "orders", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Sucesso", response = Order.class, responseContainer = "List"),
         @ApiResponse(code = 401, message = "Sem autorizacao") })
-    @RequestMapping(value = "{userId}",
+    @RequestMapping(value = "/",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Order>> ordersUserIdGet(@ApiParam(value = "ID do usuário",required=true) @PathVariable("userId") Long userId);
+    ResponseEntity<List<Order>> ordersUserGet();
 
 
-    @ApiOperation(value = "Cria um cupom para um usuario", nickname = "ordersUserIdPost", notes = "", authorizations = {
+    @ApiOperation(value = "Cria um cupom para um usuario", nickname = "ordersUserPost", notes = "", authorizations = {
         @Authorization(value = "Bearer")
     }, tags={ "orders", })
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "Criado"),
         @ApiResponse(code = 405, message = "Invalid input") })
-    @RequestMapping(value = "{userId}",
+    @RequestMapping(value = "/",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Order> ordersUserIdPost(@ApiParam(value = "",required=true) @PathVariable("userId") Long userId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Order body);
+    ResponseEntity<Order> ordersUserPost(@Valid @RequestBody Order body);
 
 }

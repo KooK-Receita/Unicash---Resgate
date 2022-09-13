@@ -38,36 +38,18 @@ public class OrdersApiController implements OrdersApi {
         this.request = request;
     }
 
-    public ResponseEntity<List<Order>> ordersUserIdGet(@ApiParam(value = "ID do usuário",required=true) @PathVariable("userId") Long userId) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Order>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Order>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<List<Order>>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    public ResponseEntity<Order> ordersUserIdPost(@ApiParam(value = "",required=true) @PathVariable("userId") Long userId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Order body) {
-        Order order = null;
-        try {
-            String accept = request.getHeader("Accept");
-            body.setUserId(userId);
-            order = orderService.createOrder(body);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        if (order != null){
-            return new ResponseEntity<Order>(order, HttpStatus.CREATED);
-        }
-        return new ResponseEntity<Order>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
     public void setOrderService(OrderService orderService) {
         this.orderService = orderService;
+    }
+
+
+    public ResponseEntity<List<Order>> ordersUserGet() {
+        return new ResponseEntity<List<Order>>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    public ResponseEntity<Order> ordersUserPost(Order body) {
+        return new ResponseEntity<Order>(HttpStatus.NOT_IMPLEMENTED);
+
     }
 }

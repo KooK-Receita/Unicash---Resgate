@@ -65,4 +65,25 @@ public interface OrderApi {
         method = RequestMethod.PUT)
     ResponseEntity<Void> orderOrderIdPut(@ApiParam(value = "",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Order body);
 
+    @ApiOperation(value = "Valida se o cupom é válido", nickname = "orderCouponValidGet", notes = "", response = Order.class, authorizations = {
+            @Authorization(value = "Bearer")
+    }, tags={ "order", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Sucesso", response = Order.class),
+            @ApiResponse(code = 401, message = "Sem autorizacao") })
+    @RequestMapping(value = "{orderId}",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<Order> orderCouponValidGet(@ApiParam(value = "Código do cupom",required=true) @PathVariable("couponCode") String couponCode);
+
+    @ApiOperation(value = "Dá a baixa no cupom", nickname = "orderCouponFinishGet", notes = "", response = Order.class, authorizations = {
+            @Authorization(value = "Bearer")
+    }, tags={ "order", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Sucesso", response = Order.class),
+            @ApiResponse(code = 401, message = "Sem autorizacao") })
+    @RequestMapping(value = "{orderId}",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<Order> orderCouponFinishGet(@ApiParam(value = "Código do cupom",required=true) @PathVariable("couponCode") String couponCode);
 }
