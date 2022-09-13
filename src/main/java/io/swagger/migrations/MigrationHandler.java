@@ -60,6 +60,8 @@ public class MigrationHandler {
     protected void createOrderProductTable(EntityManager entityManager){
         String sql = "CREATE TABLE IF NOT EXISTS \"ORDER_PRODUCT\" (" +
                 "ORDER_PRODUCT_ID SERIAL PRIMARY KEY, " +
-                "ORDER_ID BIGINT, PRODUCT_ID BIGINT";
+                "ORDER_ID BIGINT, PRODUCT_ID BIGINT," +
+                "PRODUCT_QUANTITY  INTEGER NOT NULL, " +
+                "PRODUCT_PRICE  DECIMAL(10, 2) NOT NULL";
     }
 }
