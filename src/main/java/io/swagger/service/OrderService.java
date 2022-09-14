@@ -24,6 +24,10 @@ public class OrderService {
         this.dao = dao;
     }
 
+
+    public List<Order> getOrderByUser(Long userId){
+        return dao.getOrderByUser(userId);
+    }
     public Date getCouponValidateDate(Date date){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

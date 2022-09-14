@@ -8,6 +8,7 @@ package io.swagger.api;
 import io.swagger.annotations.*;
 import io.swagger.model.CreateOrderDTO;
 import io.swagger.model.Order;
+import io.swagger.model.OrderResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public interface OrdersApi {
     @RequestMapping(value = "/",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Order>> ordersUserGet();
+    ResponseEntity<List<OrderResponseDTO>> ordersUserGet();
 
 
     @ApiOperation(value = "Cria um cupom para um usuario", nickname = "ordersUserPost", notes = "", authorizations = {

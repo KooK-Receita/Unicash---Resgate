@@ -2,18 +2,40 @@ package io.swagger.dao;
 
 import io.swagger.model.Order;
 import io.swagger.model.Product;
+import org.aspectj.weaver.ast.Or;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import java.sql.*;
+import java.util.List;
 
 @Component
 public class OrderDao extends Dao<Order> {
 
     protected OrderDao(EntityManagerFactory factory) {
         super(factory);
+    }
+
+    public List<Order> getOrderByUser(Long userId) {
+        String hql = "SELECT DISTINCT o FROM Order o " +
+                "JOIN FETCH o.products products " +
+                " WHERE o.userId = :userId";
+
+        List<Order> resultList = null;
+        try {
+            EntityManager entityManager = factory.createEntityManager();
+            Query query = entityManager.createQuery(hql);
+            query.setParameter("userId", userId);
+            resultList = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resultList;
     }
 
     public Order createOrder(Order order) throws SQLException {
@@ -46,7 +68,7 @@ public class OrderDao extends Dao<Order> {
 
     private void insertOrder(Connection connection, Order order) throws Exception {
         String orderSql =
-                "INSERT INTO \"ORDER\" (COUPON_CODE, SHOP_ID, USER_ID, TOTAL, CREATED_AT, VALID_UNTIL, ACTIVE)  " +
+                "INSERT INTO RES_ORDER (COUPON_CODE, SHOP_ID, USER_ID, TOTAL, CREATED_AT, VALID_UNTIL, ACTIVE)  " +
                         "VALUES (?,?,?,?,?,?,?)";
 
 
@@ -90,7 +112,7 @@ public class OrderDao extends Dao<Order> {
 
     private void insertOrderProduct(Connection connection, Order order) throws Exception {
         String orderSql =
-                "INSERT INTO \"ORDER_PRODUCT\" (ORDER_ID, PRODUCT_ID, PRODUCT_QUANTITY, PRODUCT_PRICE)  " +
+                "INSERT INTO RES_ORDER_PRODUCT (ORDER_ID, PRODUCT_ID, PRODUCT_QUANTITY, PRODUCT_PRICE)  " +
                         "VALUES (?,?,?,?)";
 
 
