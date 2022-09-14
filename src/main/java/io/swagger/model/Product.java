@@ -33,15 +33,19 @@ public class Product   {
 
   @Column(name = "PRICE")
   @JsonProperty("price")
-  private Float price = null;
+  private Double price = null;
 
   @JsonProperty("iconUrl")
   private String iconUrl = null;
+
+  @JsonProperty("quantity")
+  private Integer quantity = null;
 
   public Product productId(Long productId) {
     this.productId = productId;
     return this;
   }
+
 
   /**
    * Get productId
@@ -98,7 +102,7 @@ public class Product   {
     this.name = name;
   }
 
-  public Product price(Float price) {
+  public Product price(Double price) {
     this.price = price;
     return this;
   }
@@ -110,11 +114,14 @@ public class Product   {
   @ApiModelProperty(value = "")
 
 
-  public Float getPrice() {
+  public Double getPrice() {
+    if (price == null){
+      return 0d;
+    }
     return price;
   }
 
-  public void setPrice(Float price) {
+  public void setPrice(Double price) {
     this.price = price;
   }
 
@@ -138,6 +145,16 @@ public class Product   {
     this.iconUrl = iconUrl;
   }
 
+  public Integer getQuantity() {
+    if (quantity == null){
+      return 0;
+    }
+    return quantity;
+  }
+
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
+  }
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -152,12 +169,13 @@ public class Product   {
         Objects.equals(this.shopId, product.shopId) &&
         Objects.equals(this.name, product.name) &&
         Objects.equals(this.price, product.price) &&
+            Objects.equals(this.quantity, product.quantity) &&
         Objects.equals(this.iconUrl, product.iconUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, shopId, name, price, iconUrl);
+    return Objects.hash(productId, shopId, name, price, quantity, iconUrl);
   }
 
   @Override
@@ -169,6 +187,7 @@ public class Product   {
     sb.append("    shopId: ").append(toIndentedString(shopId)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    price: ").append(toIndentedString(price)).append("\n");
+    sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
     sb.append("    iconUrl: ").append(toIndentedString(iconUrl)).append("\n");
     sb.append("}");
     return sb.toString();
