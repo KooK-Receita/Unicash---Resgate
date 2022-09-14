@@ -10,35 +10,36 @@ import javax.persistence.EntityManagerFactory;
 import java.sql.*;
 
 @Component
-public class OrderDao extends Dao<Order>{
+public class OrderDao extends Dao<Order> {
 
     protected OrderDao(EntityManagerFactory factory) {
         super(factory);
     }
 
-    public Order createOrder(Order order) throws Exception {
+    public Order createOrder(Order order) throws SQLException {
         Session session = factory.createEntityManager().unwrap(Session.class);
-
 
         session.doWork(new Work() {
             @Override
             public void execute(Connection connection) throws SQLException {
                 try {
-                  insertOrder(connection, order);
-                  insertOrderProduct(connection, order);
-                  connection.commit();
+                    connection.setAutoCommit(false);
+
+                    insertOrder(connection, order);
+                    insertOrderProduct(connection, order);
+                    connection.commit();
                 } catch (Exception e) {
                     System.out.println("Houve um erro ao criar o pedido");
-                    connection.rollback();
                     e.printStackTrace();
+                    connection.rollback();
                 } finally {
                     session.close();
                 }
 
             }
         });
-        if (order == null || order.getOrderId() == null){
-            throw new Exception("Nao foi possivel criar o pedido");
+        if (order == null || order.getOrderId() == null) {
+            throw new SQLException("Nao foi possivel criar o pedido");
         }
         return order;
     }
@@ -63,7 +64,7 @@ public class OrderDao extends Dao<Order>{
             preparedStatement.setBoolean(7, order.isActive());
 
             int affectRows = preparedStatement.executeUpdate();
-            if (affectRows == 0){
+            if (affectRows == 0) {
                 throw new Exception("Erro ao criar Pedido");
             }
 
@@ -97,7 +98,7 @@ public class OrderDao extends Dao<Order>{
 
         try {
             preparedStatement = connection.prepareStatement(orderSql);
-            for (Product product: order.getProducts()){
+            for (Product product : order.getProducts()) {
                 preparedStatement.setLong(1, order.getOrderId());
                 preparedStatement.setLong(2, product.getProductId());
                 preparedStatement.setInt(3, product.getQuantity());

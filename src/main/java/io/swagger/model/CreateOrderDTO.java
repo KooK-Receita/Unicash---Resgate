@@ -7,10 +7,10 @@ import java.util.List;
 
 public class CreateOrderDTO {
 
-    @JsonProperty("products")
+    @JsonProperty(value = "products", required = true)
     public List<Product> products = new ArrayList<>();
 
-    @JsonProperty("shopId")
+    @JsonProperty(value = "shopId", required = true)
     public Long shopId;
 
 

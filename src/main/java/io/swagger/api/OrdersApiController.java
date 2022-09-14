@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T22:37:01.163Z")
 
@@ -44,11 +46,26 @@ public class OrdersApiController implements OrdersApi {
 
     }
 
-    public ResponseEntity<?> ordersUserPost(@RequestBody CreateOrderDTO body) {
+    public ResponseEntity<?> ordersUserPost(@Valid @RequestBody CreateOrderDTO body) {
+        HashSet<String> errors = new HashSet<>();
         if (body != null){
             try {
+                if (body.products == null) {
+                    errors.add("Products are required");
+                }
+
+                if (body.shopId == null) {
+                    errors.add("ShopId is required");
+                }
+
+                if (!errors.isEmpty()) {
+                    return new ResponseEntity<ApiError>(new ApiError(errors), HttpStatus.BAD_REQUEST);
+                }
+
                 Order order = orderService.createOrder(body);
                 return new ResponseEntity<Order>(order, HttpStatus.CREATED);
+            } catch (ApiException ae){
+                return new ResponseEntity<ApiError>(new ApiError(ae.erros), HttpStatus.BAD_REQUEST);
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }

@@ -21,25 +21,25 @@ public class Product   {
 
   @Id
   @Column(name = "PRODUCT_ID")
-  @JsonProperty("productId")
+  @JsonProperty(value = "productId", required = true)
   private Long productId = null;
 
   @JsonProperty("shopId")
   private Long shopId = null;
 
   @Column(name = "NAME")
-  @JsonProperty("name")
+  @JsonProperty(value = "name", required = true)
   private String name = null;
 
   @Column(name = "PRICE")
-  @JsonProperty("price")
-  private Double price = null;
+  @JsonProperty(value = "price", required = true)
+  private Double price = 0d;
 
   @JsonProperty("iconUrl")
   private String iconUrl = null;
 
-  @JsonProperty("quantity")
-  private Integer quantity = null;
+  @JsonProperty(value = "quantity",required = true)
+  private Integer quantity = 0;
 
   public Product productId(Long productId) {
     this.productId = productId;
