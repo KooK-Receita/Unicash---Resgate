@@ -2,13 +2,13 @@ package io.swagger.dao;
 
 import io.swagger.model.Order;
 import io.swagger.model.Product;
-import org.aspectj.weaver.ast.Or;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.sql.*;
 import java.util.List;
@@ -21,18 +21,20 @@ public class OrderDao extends Dao<Order> {
     }
 
     public List<Order> getOrderByUser(Long userId) {
-        String hql = "SELECT DISTINCT o FROM Order o " +
-                "JOIN FETCH o.products products " +
-                " WHERE o.userId = :userId";
+        String hql = "SELECT DISTINCT ordr FROM Order ordr " +
+                "JOIN FETCH ordr.products products " +
+                " WHERE ordr.userId = :userId";
 
         List<Order> resultList = null;
+        EntityManager entityManager = factory.createEntityManager();
         try {
-            EntityManager entityManager = factory.createEntityManager();
             Query query = entityManager.createQuery(hql);
             query.setParameter("userId", userId);
             resultList = query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            entityManager.close();
         }
 
         return resultList;
@@ -54,6 +56,7 @@ public class OrderDao extends Dao<Order> {
                     System.out.println("Houve um erro ao criar o pedido");
                     e.printStackTrace();
                     connection.rollback();
+                    order.setOrderId(null);
                 } finally {
                     session.close();
                 }
@@ -97,8 +100,6 @@ public class OrderDao extends Dao<Order> {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Houve um erro ao inserir o pedido");
-            e.printStackTrace();
             throw new Exception(e.getMessage());
         } finally {
             if (generatedKeys != null) {
@@ -141,5 +142,43 @@ public class OrderDao extends Dao<Order> {
                 preparedStatement.close();
             }
         }
+    }
+
+    public boolean deleteOrder(Long orderId, Long userId) {
+        EntityManager entityManager = factory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        boolean deleted = false;
+        try {
+            transaction.begin();
+            Query query = entityManager.createQuery(
+                    "DELETE FROM Order ordr WHERE ordr.orderId = :orderId AND ordr.userId = :userId");
+
+            query.setParameter("orderId", orderId);
+            query.setParameter("userId", userId);
+
+            deleted = query.executeUpdate() > 0;
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw e;
+        } finally {
+            entityManager.close();
+        }
+        return deleted;
+    }
+
+    public Order findOrder(Long orderId, Long userId) {
+        EntityManager entityManager = factory.createEntityManager();
+        Query query = entityManager.createQuery(
+                "SELECT ordr FROM Order ordr " +
+                        "JOIN FETCH ordr.products products " +
+                        "WHERE ordr.orderId = :orderId AND ordr.userId = :userId");
+        query.setParameter("orderId", orderId);
+        query.setParameter("userId", userId);
+
+        Order order = (Order) query.getSingleResult();
+        entityManager.close();
+
+        return order;
     }
 }

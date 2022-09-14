@@ -5,6 +5,7 @@ import io.swagger.model.CreateOrderDTO;
 import io.swagger.model.Order;
 import io.swagger.model.OrderResponseDTO;
 import io.swagger.service.OrderService;
+import io.swagger.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class OrdersApiController implements OrdersApi {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private UserService userService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public OrdersApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -70,11 +74,12 @@ public class OrdersApiController implements OrdersApi {
                     return new ResponseEntity<ApiError>(new ApiError(errors), HttpStatus.BAD_REQUEST);
                 }
 
-                Order order = orderService.createOrder(body);
+                Order order = orderService.createOrder(body, userService.getUserIdByToken(""));
                 return new ResponseEntity<Order>(order, HttpStatus.CREATED);
             } catch (ApiException ae){
                 return new ResponseEntity<ApiError>(new ApiError(ae.erros), HttpStatus.BAD_REQUEST);
             } catch (Exception e) {
+                e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }

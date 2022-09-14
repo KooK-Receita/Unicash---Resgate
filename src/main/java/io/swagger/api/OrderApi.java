@@ -5,22 +5,16 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.Order;
 import io.swagger.annotations.*;
+import io.swagger.model.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T22:37:01.163Z")
 
 @Validated
@@ -29,27 +23,29 @@ import java.util.List;
 public interface OrderApi {
 
     @ApiOperation(value = "Deleta o pedido", nickname = "orderOrderIdDelete", notes = "", authorizations = {
-        @Authorization(value = "Bearer")
-    }, tags={ "order", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Deletado com sucesso"),
-        @ApiResponse(code = 404, message = "Pedido não encontrado") })
+            @Authorization(value = "Bearer")
+    }, tags = {"order",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Deletado com sucesso"),
+            @ApiResponse(code = 400, message = "Esse pedido não existe ou você não pode deleta-lo"),
+            @ApiResponse(code = 404, message = "Pedido não encontrado")})
     @RequestMapping(value = "{orderId}",
-        produces = { "application/json" }, 
-        method = RequestMethod.DELETE)
-    ResponseEntity<Void> orderOrderIdDelete(@ApiParam(value = "Id do pedido a ser deletado",required=true) @PathVariable("orderId") Long orderId);
+            produces = {"application/json"},
+            method = RequestMethod.DELETE)
+    ResponseEntity<?> orderOrderIdDelete(@ApiParam(value = "Id do pedido a ser deletado", required = true) @PathVariable("orderId") Long orderId);
 
 
     @ApiOperation(value = "Retorna um pedido", nickname = "orderOrderIdGet", notes = "", response = Order.class, authorizations = {
-        @Authorization(value = "Bearer")
-    }, tags={ "order", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Sucesso", response = Order.class),
-        @ApiResponse(code = 401, message = "Sem autorizacao") })
+            @Authorization(value = "Bearer")
+    }, tags = {"order",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Sucesso", response = Order.class),
+            @ApiResponse(code = 204, message = "Pedido não encontrado"),
+            @ApiResponse(code = 401, message = "Sem autorizacao")})
     @RequestMapping(value = "{orderId}",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<Order> orderOrderIdGet(@ApiParam(value = "ID do usuário",required=true) @PathVariable("orderId") Long orderId);
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<?> orderOrderIdGet(@ApiParam(value = "ID do usuário", required = true) @PathVariable("orderId") Long orderId);
 
 
     @ApiOperation(value = "Atualizar um pedido", nickname = "orderOrderIdPut", notes = "Usado apenas para invalidar o cupom", authorizations = {
