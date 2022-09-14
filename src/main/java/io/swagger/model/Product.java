@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
@@ -17,6 +15,7 @@ import java.util.Objects;
 
 
 @Entity
+@Table(name = "RES_ORDER_PRODUCT")
 public class Product   {
 
   @Id
@@ -24,20 +23,23 @@ public class Product   {
   @JsonProperty(value = "productId", required = true)
   private Long productId = null;
 
+  @Transient
   @JsonProperty("shopId")
   private Long shopId = null;
 
-  @Column(name = "NAME")
+  @Transient
   @JsonProperty(value = "name", required = true)
   private String name = null;
 
-  @Column(name = "PRICE")
+  @Column(name = "PRODUCT_PRICE")
   @JsonProperty(value = "price", required = true)
   private Double price = 0d;
 
+  @Transient
   @JsonProperty("iconUrl")
   private String iconUrl = null;
 
+  @Column(name = "PRODUCT_QUANTITY")
   @JsonProperty(value = "quantity",required = true)
   private Integer quantity = 0;
 

@@ -18,7 +18,7 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T19:42:49.684Z")
 
 @Entity
-@Table(name = "ORDER")
+@Table(name = "RES_ORDER", schema = "desenvolvimento")
 public class Order   {
 
   @Id
@@ -29,7 +29,7 @@ public class Order   {
 
   @ManyToMany
   @JoinTable(
-          name = "ORDER_PRODUCT",
+          name = "RES_ORDER_PRODUCT",
           joinColumns = { @JoinColumn(name = "ORDER_ID") },
           inverseJoinColumns = { @JoinColumn(name = "PRODUCT_ID")}
   )
@@ -47,7 +47,7 @@ public class Order   {
   @JsonProperty("userId")
   private Long userId = null;
 
-  @Column(name = "COUPOM_CODE", nullable = false)
+  @Column(name = "COUPON_CODE", nullable = false)
   @JsonProperty("couponCode")
   private String couponCode = null;
 
@@ -63,6 +63,8 @@ public class Order   {
   @JsonProperty("total")
   private Double total = null;
 
+  public Order() {
+  }
 
   public Order(CreateOrderDTO orderDTO) {
       this.products = new ArrayList<>(orderDTO.products);
