@@ -41,7 +41,7 @@ public class MigrationHandler {
 
         return result != null;
     }
-    protected void createOrderTable(EntityManager entityManger){
+    protected void createOrderTable(EntityManager entityManager){
         String sql = "CREATE TABLE IF NOT EXISTS \"ORDER\" (" +
                 "ORDER_ID SERIAL PRIMARY KEY, " +
                 "CREATED_AT TIMESTAMP NOT NULL, " +
@@ -53,15 +53,19 @@ public class MigrationHandler {
                 "TOTAL DECIMAL(10, 2) NOT NULL" +
                 ");";
 
-        entityManger.createNativeQuery(sql).executeUpdate();
+        entityManager.createNativeQuery(sql).executeUpdate();
 
     }
 
     protected void createOrderProductTable(EntityManager entityManager){
         String sql = "CREATE TABLE IF NOT EXISTS \"ORDER_PRODUCT\" (" +
                 "ORDER_PRODUCT_ID SERIAL PRIMARY KEY, " +
-                "ORDER_ID BIGINT, PRODUCT_ID BIGINT," +
+                "ORDER_ID BIGINT, PRODUCT_ID BIGINT, " +
                 "PRODUCT_QUANTITY  INTEGER NOT NULL, " +
-                "PRODUCT_PRICE  DECIMAL(10, 2) NOT NULL";
+                "PRODUCT_PRICE DECIMAL(10, 2) NOT NULL "+
+                " ); ";
+
+        entityManager.createNativeQuery(sql).executeUpdate();
+
     }
 }

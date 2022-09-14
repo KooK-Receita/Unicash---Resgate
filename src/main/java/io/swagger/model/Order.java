@@ -63,6 +63,12 @@ public class Order   {
   @JsonProperty("total")
   private Double total = null;
 
+
+  public Order(CreateOrderDTO orderDTO) {
+      this.products = new ArrayList<>(orderDTO.products);
+      this.shopId = orderDTO.shopId;
+  }
+
   public Order orderId(Long orderId) {
     this.orderId = orderId;
     return this;
@@ -73,9 +79,7 @@ public class Order   {
    * @return orderId
   **/
   @ApiModelProperty(value = "")
-
   @Valid
-
   public Long getOrderId() {
     return orderId;
   }
@@ -248,7 +252,16 @@ public class Order   {
 
 
   public Double getTotal() {
-    return total;
+
+      if (products != null && !products.isEmpty()){
+        double total = 0;
+        for (Product product: products){
+          total += product.getPrice() * product.getQuantity();
+        }
+
+        return total;
+      }
+      return 0d;
   }
 
   public void setTotal(Double total) {
