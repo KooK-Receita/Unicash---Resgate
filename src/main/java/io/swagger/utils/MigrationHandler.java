@@ -1,4 +1,4 @@
-package io.swagger.migrations;
+package io.swagger.utils;
 
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

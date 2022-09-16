@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan(basePackages = { "io.swagger", "io.swagger.api" , "io.swagger.configuration", "io.swagger.migrations", "io.swagger.dao", "io.swagger.service"})
+@ComponentScan(basePackages = { "io.swagger", "io.swagger.api" , "io.swagger.configuration", "io.swagger.utils", "io.swagger.dao", "io.swagger.service"})
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     @Override
