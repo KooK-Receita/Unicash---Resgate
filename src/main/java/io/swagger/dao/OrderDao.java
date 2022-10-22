@@ -113,7 +113,7 @@ public class OrderDao extends Dao<Order> {
         } catch (Exception e) {
             System.out.println("Houve um erro ao inserir o pedido");
             e.printStackTrace();
-            throw new Exception(e.getMessage());
+            throw new Exception(e);
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
