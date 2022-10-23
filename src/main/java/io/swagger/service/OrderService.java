@@ -57,10 +57,8 @@ public class OrderService {
 
     public Order createOrder(CreateOrderDTO orderToInsert) throws ApiException, SQLException {
         Order order = new Order(orderToInsert);
+        order.setUserId(1L);
 
-        if (Objects.equals(System.getenv("AMBIENTE"), "DEV")){
-            order.setUserId(1L);
-        }
 
         validateOrderToInsert(orderToInsert);
 
