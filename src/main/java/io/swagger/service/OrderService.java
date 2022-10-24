@@ -72,6 +72,9 @@ public class OrderService {
     public Order createOrder(CreateOrderDTO orderToInsert, Long userId) throws ApiException, SQLException {
         Order order = new Order(orderToInsert);
         validateOrderToInsert(orderToInsert);
+        if (userId == null){
+            userId = 1L;
+        }
         order.setUserId(userId);
 
         Date createdDate = new Date();
