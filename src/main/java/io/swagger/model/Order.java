@@ -18,7 +18,7 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T19:42:49.684Z")
 
 @Entity
-@Table(name = "RES_ORDER", schema = "desenvolvimento")
+@Table(name = "RES_ORDER")
 public class Order   {
 
   @Id
