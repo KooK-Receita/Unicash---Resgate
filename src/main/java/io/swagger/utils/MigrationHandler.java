@@ -1,14 +1,16 @@
-package io.swagger.migrations;
+package io.swagger.utils;
 
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @Repository
@@ -20,13 +22,16 @@ public class MigrationHandler {
 
     public MigrationHandler(EntityManagerFactory factory){
         this.factory = factory;
-        EntityManager entityManager = factory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
+        Session session = factory.createEntityManager().unwrap(Session.class);
+        session.doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                createOrderTable(connection);
+                createOrderProductTable(connection);
+            }
+        });
 
-        createOrderTable(entityManager);
-        createOrderProductTable(entityManager);
-        transaction.commit();
+
     }
 
     public boolean tableExists(String tableName, String columnName){
@@ -41,8 +46,8 @@ public class MigrationHandler {
 
         return result != null;
     }
-    protected void createOrderTable(EntityManager entityManager){
-        String sql = "CREATE TABLE IF NOT EXISTS \"ORDER\" (" +
+    protected void createOrderTable(Connection connection) throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS RES_ORDER (" +
                 "ORDER_ID SERIAL PRIMARY KEY, " +
                 "CREATED_AT TIMESTAMP NOT NULL, " +
                 "SHOP_ID BIGINT NOT NULL, " +
@@ -53,19 +58,21 @@ public class MigrationHandler {
                 "TOTAL DECIMAL(10, 2) NOT NULL" +
                 ");";
 
-        entityManager.createNativeQuery(sql).executeUpdate();
-
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.execute();
+        preparedStatement.close();
     }
 
-    protected void createOrderProductTable(EntityManager entityManager){
-        String sql = "CREATE TABLE IF NOT EXISTS \"ORDER_PRODUCT\" (" +
+    protected void createOrderProductTable(Connection connection) throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS RES_ORDER_PRODUCT (" +
                 "ORDER_PRODUCT_ID SERIAL PRIMARY KEY, " +
                 "ORDER_ID BIGINT, PRODUCT_ID BIGINT, " +
                 "PRODUCT_QUANTITY  INTEGER NOT NULL, " +
                 "PRODUCT_PRICE DECIMAL(10, 2) NOT NULL "+
                 " ); ";
 
-        entityManager.createNativeQuery(sql).executeUpdate();
-
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.execute();
+        preparedStatement.close();
     }
 }

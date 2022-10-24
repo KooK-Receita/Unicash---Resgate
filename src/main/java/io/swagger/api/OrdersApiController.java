@@ -3,7 +3,9 @@ package io.swagger.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.model.CreateOrderDTO;
 import io.swagger.model.Order;
+import io.swagger.model.OrderResponseDTO;
 import io.swagger.service.OrderService;
+import io.swagger.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-09-10T22:37:01.163Z")
@@ -30,6 +33,9 @@ public class OrdersApiController implements OrdersApi {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private UserService userService;
+
     @org.springframework.beans.factory.annotation.Autowired
     public OrdersApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -41,8 +47,14 @@ public class OrdersApiController implements OrdersApi {
     }
 
 
-    public ResponseEntity<List<Order>> ordersUserGet() {
-        return new ResponseEntity<List<Order>>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<List<OrderResponseDTO>> ordersUserGet() {
+        List<Order> orders = orderService.getOrderByUser(1l);
+        List<OrderResponseDTO> responseDTOS = new ArrayList<>();
+
+        for (Order order : orders) {
+            responseDTOS.add(new OrderResponseDTO(order));
+        }
+        return new ResponseEntity<List<OrderResponseDTO>>(responseDTOS, HttpStatus.OK);
 
     }
 
@@ -62,11 +74,12 @@ public class OrdersApiController implements OrdersApi {
                     return new ResponseEntity<ApiError>(new ApiError(errors), HttpStatus.BAD_REQUEST);
                 }
 
-                Order order = orderService.createOrder(body);
+                Order order = orderService.createOrder(body, userService.getUserIdByToken(""));
                 return new ResponseEntity<Order>(order, HttpStatus.CREATED);
             } catch (ApiException ae){
                 return new ResponseEntity<ApiError>(new ApiError(ae.erros), HttpStatus.BAD_REQUEST);
             } catch (Exception e) {
+                e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }

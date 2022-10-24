@@ -24,5 +24,6 @@ public class ApiOriginFilter implements javax.servlet.Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+
     }
 }

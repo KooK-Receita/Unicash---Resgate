@@ -9,6 +9,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
@@ -24,11 +25,24 @@ public class OrderService {
         this.dao = dao;
     }
 
-    public Date getCouponValidateDate(Date date){
+
+    public List<Order> getOrderByUser(Long userId) {
+        return dao.getOrderByUser(userId);
+    }
+
+    public Date getCouponValidateDate(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE, 10);
         return calendar.getTime();
+    }
+
+    public Order findOrderByOrderId(Long orderId, Long userId) {
+        try {
+            return dao.findOrder(orderId, userId);
+        } catch (NoResultException noResultException) {
+            return null;
+        }
     }
 
     private void validateOrderToInsert(CreateOrderDTO orderDTO) throws ApiException {
@@ -36,11 +50,11 @@ public class OrderService {
         int index = 0;
         for (Product product : orderDTO.products) {
             String productIdentification = "Product[" + index + "] ";
-            if (product == null){
+            if (product == null) {
                 erros.add(productIdentification + " is null");
                 continue;
             }
-            if (product.getProductId() == null){
+            if (product.getProductId() == null) {
                 erros.add(productIdentification + "ID is required");
             }
 
@@ -55,12 +69,10 @@ public class OrderService {
         }
     }
 
-    public Order createOrder(CreateOrderDTO orderToInsert) throws ApiException, SQLException {
+    public Order createOrder(CreateOrderDTO orderToInsert, Long userId) throws ApiException, SQLException {
         Order order = new Order(orderToInsert);
-        order.setUserId(1L);
-
-
         validateOrderToInsert(orderToInsert);
+        order.setUserId(userId);
 
         Date createdDate = new Date();
         Date validDate = getCouponValidateDate(createdDate);
@@ -74,7 +86,9 @@ public class OrderService {
         return dao.createOrder(order);
     }
 
-
+    public boolean deleteOrder(Long orderId, Long userId) {
+        return dao.deleteOrder(orderId, userId);
+    }
 
     public void setDao(OrderDao dao) {
         this.dao = dao;
