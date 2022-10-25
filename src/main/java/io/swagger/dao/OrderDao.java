@@ -151,10 +151,9 @@ public class OrderDao extends Dao<Order> {
         try {
             transaction.begin();
             Query query = entityManager.createQuery(
-                    "DELETE FROM Order ordr WHERE ordr.orderId = :orderId AND ordr.userId = :userId");
+                    "DELETE FROM Order ordr WHERE ordr.orderId = :orderId");
 
             query.setParameter("orderId", orderId);
-            query.setParameter("userId", userId);
 
             deleted = query.executeUpdate() > 0;
             transaction.commit();
