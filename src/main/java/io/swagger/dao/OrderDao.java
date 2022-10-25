@@ -94,8 +94,8 @@ public class OrderDao extends Dao<Order> {
             preparedStatement.setLong(2, order.getShopId());
             preparedStatement.setLong(3, order.getUserId());
             preparedStatement.setDouble(4, order.getTotal());
-            preparedStatement.setDate(5, new Date(order.getCreatedAt().getTime()));
-            preparedStatement.setDate(6, new Date(order.getValidUntil().getTime()));
+            preparedStatement.setTimestamp(5, new Timestamp(order.getCreatedAt().getTime()));
+            preparedStatement.setTimestamp(6, new Timestamp(order.getValidUntil().getTime()));
             preparedStatement.setBoolean(7, order.isActive());
 
             int affectRows = preparedStatement.executeUpdate();
