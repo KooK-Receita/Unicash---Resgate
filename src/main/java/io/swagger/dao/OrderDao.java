@@ -11,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.sql.*;
+import java.util.Calendar;
 import java.util.List;
 
 @Component
@@ -21,15 +22,24 @@ public class OrderDao extends Dao<Order> {
     }
 
     public List<Order> getOrderByUser(Long userId) {
+        java.util.Date now = new java.util.Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.MINUTE, -30);
+        java.util.Date validUtil = calendar.getTime();
+
         String hql = "SELECT DISTINCT ordr FROM Order ordr " +
                 "JOIN FETCH ordr.products products " +
-                " WHERE ordr.userId = :userId";
+                " WHERE ordr.userId = :userId AND " +
+                "ordr.validUntil >= :validUntilDate ";
+
 
         List<Order> resultList = null;
         EntityManager entityManager = factory.createEntityManager();
         try {
             Query query = entityManager.createQuery(hql);
             query.setParameter("userId", userId);
+            query.setParameter("validUntilDate", validUtil);
             resultList = query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();

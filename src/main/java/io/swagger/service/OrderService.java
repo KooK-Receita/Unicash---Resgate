@@ -33,7 +33,7 @@ public class OrderService {
     public Date getCouponValidateDate(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DATE, 10);
+        calendar.add(Calendar.MINUTE, 30);
         return calendar.getTime();
     }
 
